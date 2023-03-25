@@ -34,24 +34,41 @@ use { 'OliverChao/telescope-picker-list.nvim' }
 
 ## Config
 
+Initialize picker-list in extensions field.
+```
+extensions = {
+
+  -- picker-list extensions
+  picker_list = {},
+}
+```
+
+1. If you want to add some options for pickers, use `opts`.
+2. If you want to exclude some pickers, use `excluded_pickers`.
+3. If you want to define you own pickers, use `use_pickers`.
+
+Here is one example:
+
 ```lua
 telescope.setup({
   -- other config
   extensions = {
 
-    -- find_picker extensions
-    find_pickers = {
+    -- picker_list extensions
+    picker_list = {
+      -- some picker options
       opts = {
         project = { display_type = "full" },
         emoji = require("telescope.themes").get_dropdown({}),
         luasnip = require("telescope.themes").get_dropdown({}),
         notify = require("telescope.themes").get_dropdown({}),
       },
+      -- excluded pickers which will not list
       excluded_pickers = {
         "fzf",
-        "find_pickers",
         "fd",
       },
+      -- user defined pickers
       user_pickers = {
         {
           "todo-comments",
@@ -72,12 +89,42 @@ telescope.setup({
           end,
         },
       },
-    },
-  },
+    }, -- end picker-list
+  }, -- end extensions
+}) -- end telescope setup function
+
+require("telescope").load_extension("fzf")
+require("telescope").load_extension("luasnip")
+require("telescope").load_extension("file_browser")
+require("telescope").load_extension("project")
+require("telescope").load_extension("notify")
+
+-- picker_list must be the last one
+require("telescope").load_extension("picker_list")
 ```
 
 ### Keymap
 
+
+```lua
+-- neovim < 0.7
+vim.api.nvim_set_keymap(
+  "n",
+  "<leader>fh",
+  "<CMD>lua require 'telescope'.extensions.picker_list.picker_list()<CR>",
+  {
+    noremap = true,
+    silent = true,
+  }
+)
+
+-- neovim >= 0.7
+vim.keymap.set(
+  "n",
+  "<leader>fh",
+  require('telescope').extensions.picker_list.picker_list
+)
+```
 
 # Inspiration
 This plugin is inspired by [telescope-find-pickers](https://github.com/prochri/telescope-all-recent.nvim).
