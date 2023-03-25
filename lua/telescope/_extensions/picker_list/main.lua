@@ -8,15 +8,15 @@ local themes = require("telescope.themes")
 
 local M = {}
 
-local result_table = require("telescope-find-pickers").results
+local result_table = require("telescope-picker-list").results
 M.setup = function(setup_config) end
 
 -- This creates a picker with a list of all of the pickers
-M.find_pickers = function(opts)
-  local opts_find_pickers = opts or themes.get_dropdown(opts)
+M.picker_list = function(opts)
+  local opts_list_picker = opts or themes.get_dropdown(opts)
 
   pickers
-    .new(opts_find_pickers or {}, {
+    .new(opts_list_picker or {}, {
       prompt_title = "Find Pickers",
       results_title = "Picker",
       finder = finders.new_table({
@@ -38,7 +38,7 @@ M.find_pickers = function(opts)
         end)
         return true
       end,
-      sorter = conf.file_sorter(opts_find_pickers),
+      sorter = conf.file_sorter(opts_list_picker),
     })
     :find()
 end
