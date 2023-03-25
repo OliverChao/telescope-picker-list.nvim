@@ -5,48 +5,15 @@ local finders = require("telescope.finders")
 local actions_state = require("telescope.actions.state")
 local actions = require("telescope.actions")
 local themes = require("telescope.themes")
-local builtin_pickers = require("telescope.builtin")
-local extensions_pickers = require("telescope._extensions")
-
--- telescope-project modules
 
 local M = {}
 
+local result_table = require("telescope-find-pickers").results
 M.setup = function(setup_config) end
 
 -- This creates a picker with a list of all of the pickers
 M.find_pickers = function(opts)
   local opts_find_pickers = opts or themes.get_dropdown(opts)
-  local opts_pickers = {
-    bufnr = vim.api.nvim_get_current_buf(),
-    winnr = vim.api.nvim_get_current_win(),
-  }
-
-  -- Variables that setup can change
-  local result_table = {}
-
-  local excluded = extensions_pickers._config.find_pickers.excluded or {}
-  local plugin_opts = extensions_pickers._config.find_pickers.opts or {}
-  local funcs = extensions_pickers._config.find_pickers.actions or {}
-  -- print(vim.inspect(funcs))
-
-  for name, item in pairs(builtin_pickers) do
-    if not (vim.tbl_contains(excluded, name)) then
-      result_table[name] = {
-        action = funcs[name] or item or function() end,
-        opt = plugin_opts[name] or opts_pickers,
-      }
-    end
-  end
-
-  for name, item in pairs(extensions_pickers.manager) do
-    if not (vim.tbl_contains(excluded, name)) then
-      result_table[name] = {
-        action = funcs[name] or item[name] or function() end,
-        opt = plugin_opts[name] or opts_pickers,
-      }
-    end
-  end
 
   pickers
     .new(opts_find_pickers or {}, {
