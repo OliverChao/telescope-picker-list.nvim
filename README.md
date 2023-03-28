@@ -1,5 +1,11 @@
 # telescope-picker-list.nvim
 
+
+
+https://user-images.githubusercontent.com/39361033/228170293-485cb261-8607-43d1-80e7-e3956a1378e4.mp4
+
+
+
 <!-- Find all pickers available (includes `builtins` and `extensions`) -->
 A plugin that helps you use any pickers in telescope.
 
