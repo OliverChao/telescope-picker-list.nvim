@@ -8,10 +8,11 @@ local opts_pickers = {
   winnr = vim.api.nvim_get_current_win(),
 }
 
-local excluded = extensions_pickers._config.picker_list.excluded_pickers or {}
-local plugin_opts = extensions_pickers._config.picker_list.opts or {}
-local funcs = extensions_pickers._config.picker_list.actions or {}
-local user_pickers = extensions_pickers._config.picker_list.user_pickers or {}
+local picker_list = extensions_pickers._config.picker_list or {}
+local excluded = picker_list.excluded_pickers or {}
+local plugin_opts = picker_list.opts or {}
+local funcs = picker_list.actions or {}
+local user_pickers = picker_list.user_pickers or {}
 
 for _, v in ipairs(user_pickers) do
   result_table[v[1]] = {
