@@ -33,7 +33,7 @@ for extension, item in pairs(extensions_pickers.manager) do
   if not (vim.tbl_contains(excluded, extension)) then
     for name, action in pairs(item) do
       local key = extension
-      if name ~= extension and #vim.tbl_keys(item) > 1 then
+      if name ~= extension and vim.tbl_count(item) > 1 then
         key = key .. ": " .. name
       end
       result_table[key] = {
