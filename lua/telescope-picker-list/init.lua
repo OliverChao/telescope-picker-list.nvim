@@ -29,12 +29,18 @@ for name, item in pairs(builtin_pickers) do
   end
 end
 
-for name, item in pairs(extensions_pickers.manager) do
-  if not (vim.tbl_contains(excluded, name)) then
-    result_table[name] = {
-      action = funcs[name] or item[name] or function() end,
-      opt = plugin_opts[name] or opts_pickers,
-    }
+for extension, item in pairs(extensions_pickers.manager) do
+  if not (vim.tbl_contains(excluded, extension)) then
+    for name, action in pairs(item) do
+      local key = extension
+      if name ~= extension and #vim.tbl_keys(item) > 1 then
+        key = key .. ": " .. name
+      end
+      result_table[key] = {
+        action = action,
+        opt = plugin_opts[extension] or opts_pickers,
+      }
+    end
   end
 end
 
