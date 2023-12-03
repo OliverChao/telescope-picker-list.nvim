@@ -6,9 +6,8 @@ local actions_state = require("telescope.actions.state")
 local actions = require("telescope.actions")
 local themes = require("telescope.themes")
 
-local M = {}
+local M = require("telescope-picker-list")
 
-local result_table = require("telescope-picker-list").results
 M.setup = function(setup_config) end
 
 -- This creates a picker with a list of all of the pickers
@@ -20,7 +19,7 @@ M.picker_list = function(opts)
 			prompt_title = "Pickers",
 			results_title = "Picker",
 			finder = finders.new_table({
-				results = vim.tbl_keys(result_table),
+				results = vim.tbl_keys(M.results),
 			}),
 			attach_mappings = function(prompt_bufnr, map)
 				actions.select_default:replace(function()
@@ -32,8 +31,8 @@ M.picker_list = function(opts)
 
 					local value = selection.value
 					actions.close(prompt_bufnr)
-					if result_table[value] ~= nil then
-						result_table[value].action(result_table[value].opt)
+					if M.results[value] ~= nil then
+						M.results[value].action(M.results[value].opt)
 					end
 				end)
 				return true
