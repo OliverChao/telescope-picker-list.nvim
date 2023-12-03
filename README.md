@@ -110,7 +110,10 @@ require("telescope").load_extension("picker_list")
 ```
 
 If you want to register some extensions lazily, you can use `require("telescope._extensions.picker_list.main").register(extension_name)`.
-For following config adds `goimpl` extension after it is loaded.
+
+The following config adds `goimpl` extension after it is loaded.
+
+> Please note that you need make sure that telescope is loaded while activating other extensions in this way.
 
 ```lua
 {
@@ -133,6 +136,10 @@ For following config adds `goimpl` extension after it is loaded.
 
 Another example for harpoon:
 ```lua
+dependencies = {
+  "nvim-telescope/telescope.nvim",
+  other dependencies...
+},
  config = function()
    require("harpoon").setup()
    require("telescope").load_extension("harpoon")
@@ -141,7 +148,7 @@ Another example for harpoon:
  end,
 ```
 
-> picker-list use cache to locate all extensions for efficiency. In this way, after it is loaded, you need do some work to add new extensions.
+> picker-list use cache to locate all extensions for efficiency. In this way, after it is loaded, you need do some extra work to add new extensions.
 > This represents an inevitable compromise solution.
 
 ### Keymap
