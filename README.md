@@ -109,6 +109,41 @@ require("telescope").load_extension("notify")
 require("telescope").load_extension("picker_list")
 ```
 
+If you want to register some extensions lazily, you can use `require("telescope._extensions.picker_list.main").register(extension_name)`.
+For following config adds `goimpl` extension after it is loaded.
+
+```lua
+{
+    "edolphin-ydf/goimpl.nvim",
+
+    dependencies = {
+      "nvim-telescope/telescope.nvim",
+      other dependencies...
+    },
+
+    ft = "go",
+
+    config = function()
+      require("telescope").load_extension("goimpl")
+      -- add goimpl to picker_list after it is loaded
+      require("telescope._extensions.picker_list.main").register("goimpl")
+    end,
+  }
+```
+
+Another example for harpoon:
+```lua
+ config = function()
+   require("harpoon").setup()
+   require("telescope").load_extension("harpoon")
+
+   require("telescope._extensions.picker_list.main").register("harpoon")
+ end,
+```
+
+> picker-list use cache to locate all extensions for efficiency. In this way, after it is loaded, you need do some work to add new extensions.
+> This represents an inevitable compromise solution.
+
 ### Keymap
 
 
@@ -133,4 +168,4 @@ vim.keymap.set(
 ```
 
 # Inspiration
-This plugin is inspired by [telescope-find-pickers](https://github.com/prochri/telescope-all-recent.nvim).
+This plugin is inspired by [telescope-find-pickers](https://github.com/keyvchan/telescope-find-pickers.nvim).
