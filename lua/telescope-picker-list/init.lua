@@ -1,7 +1,8 @@
 local builtin_pickers = require("telescope.builtin")
 local extensions_pickers = require("telescope._extensions")
 
-local result_table = {}
+local M = {}
+M.results = {}
 
 local opts_pickers = {
 	bufnr = vim.api.nvim_get_current_buf(),
@@ -15,14 +16,14 @@ local funcs = picker_list.actions or {}
 local user_pickers = picker_list.user_pickers or {}
 
 for _, v in ipairs(user_pickers) do
-	result_table[v[1]] = {
+	M.results[v[1]] = {
 		action = v[2],
 	}
 end
 
 for name, item in pairs(builtin_pickers) do
 	if not (vim.tbl_contains(excluded, name)) then
-		result_table[name] = {
+		M.results[name] = {
 			action = funcs[name] or item or function() end,
 			opt = plugin_opts[name] or opts_pickers,
 		}
@@ -36,7 +37,7 @@ for extension, item in pairs(extensions_pickers.manager) do
 			if name ~= extension and vim.tbl_count(item) > 1 then
 				key = key .. ": " .. name
 			end
-			result_table[key] = {
+			M.results[key] = {
 				action = action,
 				opt = plugin_opts[extension] or opts_pickers,
 			}
@@ -44,4 +45,4 @@ for extension, item in pairs(extensions_pickers.manager) do
 	end
 end
 
-return { results = result_table }
+return M
