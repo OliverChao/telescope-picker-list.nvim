@@ -12,6 +12,13 @@ M.setup = function(setup_config) end
 
 -- This creates a picker with a list of all of the pickers
 M.picker_list = function(opts)
+	-- This is necessary for LSP-related pickers so they can target the correct buffer instead of
+	-- the pickers-list picker buffer (which obvious has no LSP attached).
+	local target_picker_opts = {
+		bufnr = vim.api.nvim_get_current_buf(),
+		winnr = vim.api.nvim_get_current_win(),
+	}
+
 	local opts_list_picker = opts or themes.get_dropdown(opts)
 
 	pickers
@@ -32,7 +39,8 @@ M.picker_list = function(opts)
 					local value = selection.value
 					actions.close(prompt_bufnr)
 					if M.results[value] ~= nil then
-						M.results[value].action(M.results[value].opt)
+						local opts = vim.tbl_extend("force", target_picker_opts, M.results[value].opt or {})
+						M.results[value].action(opts)
 					end
 				end)
 				return true
